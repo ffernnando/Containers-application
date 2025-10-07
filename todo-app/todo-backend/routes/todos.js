@@ -8,12 +8,27 @@ router.get('/', async (_, res) => {
   res.send(todos);
 });
 
+//polish
+router.get('/:id', async (req, res) => {
+  const todo = await Todo.find({ _id: req.params.id })
+  res.send(todo);
+});
+
+router.put('/:id', async (req, res) => {
+  const updatedTodo = await Todo.findById(req.params.id);
+  req.body.text && (updatedTodo.text = req.body.text);
+  req.body.done && (updatedTodo.done = req.body.done);
+  await updatedTodo.save();
+  res.send(updatedTodo);
+});
+
 /* POST todo to listing. */
 router.post('/', async (req, res) => {
   const todo = await Todo.create({
     text: req.body.text,
     done: false
   })
+  //add to database
   res.send(todo);
 });
 
@@ -29,7 +44,7 @@ const findByIdMiddleware = async (req, res, next) => {
 
 /* DELETE todo. */
 singleRouter.delete('/', async (req, res) => {
-  await req.todo.delete()  
+  await req.todo.delete()
   res.sendStatus(200);
 });
 
