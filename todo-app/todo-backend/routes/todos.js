@@ -9,12 +9,12 @@ router.get('/', async (_, res) => {
   res.send(todos);
 });
 
+// ✅ Moved this block up
 router.get('/statistics', async (_, res) => {
   const metadata = Number(await getAsync('added_todos') || 0);
   console.log('metadata: ', metadata);
   res.json({ added_todos: Number(metadata) });
 });
-
 
 //polish
 router.get('/:id', async (req, res) => {
@@ -72,6 +72,5 @@ singleRouter.put('/', async (req, res) => {
 });
 
 router.use('/:id', findByIdMiddleware, singleRouter)
-
 
 module.exports = router;
